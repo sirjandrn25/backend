@@ -10,6 +10,8 @@ router.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 
 	const existingUser = await User.findOne({ email: email });
+	if (!existingUser.is_superuser)
+		return res.status(403).send("user is not admin");
 
 	if (!existingUser)
 		return res.status(403).send("email or password does not matched !!");
